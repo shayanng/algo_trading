@@ -21,7 +21,53 @@ def MACD(df, a, b, c):
 jj = MACD(ohlcv, 12, 26, 9)
 
 #%% Bollinger Bands
+import pandas_datareader.data as web
+import datetime
+import matplotlib.pyplot as plt
 
+ticker = "MSFT"
 
+ohlcv = web.get_data_yahoo(ticker, datetime.date.today() - datetime.timedelta(1825), 
+                           datetime.date.today())
+
+def Bollinger_Bands(df, n):
+    """
+    this function calculates the bollinger bands
+    """
+    df = df.copy()
+    df["MA"] = df['Adj Close'].rolling(n).mean()
+    df["BB_up"] = df["MA"] + 2*df['Adj Close'].rolling(n).std(ddof=0) #ddof=0 is required since we want to take the standard deviation of the population and not sample
+    df["BB_dn"] = df["MA"] - 2*df['Adj Close'].rolling(n).std(ddof=0) #ddof=0 is required since we want to take the standard deviation of the population and not sample
+    df["BB_width"] = df["BB_up"] - df["BB_dn"]
+    df.dropna(inplace=True)
+    return df
+
+kk = Bollinger_Bands(ohlcv, 20)
+kk.iloc[-100:,[-4,-3,-2]].plot(title="Bollinger Band")
 
 #%% ATR
+import pandas_datareader.data as web
+import datetime
+import matplotlib.pyplot as plt
+
+ticker = "MSFT"
+
+ohlcv = web.get_data_yahoo(ticker, datetime.date.today() - datetime.timedelta(1825), 
+                           datetime.date.today())
+
+def ATR(df, n):
+    df = df.copy()
+    df['H-L'] = abs(df['High'] - df['Low'])
+    df['H-PC'] = abs(df['High'] - df['Adj Close'].shift(1))
+    df['L-PC'] = abs(df['Low'] - df['Adj Close'].shift(1))
+    df['TR']=df[['H-L','H-PC','L-PC']].max(axis=1,skipna=False)
+    df['ATR'] = df['TR'].rolling(n).mean()
+    #df['ATR'] = df['TR'].ewm(span=n,adjust=False,min_periods=n).mean()
+    df2 = df.drop(['H-L','H-PC','L-PC'],axis=1)
+    return df2
+
+### ATR Test 
+jj = ATR(ohlcv, 10)
+plt.style.use('ggplot')
+plt.plot(jj[['ATR', 'TR']], alpha = 0.3)
+
