@@ -26,4 +26,6 @@ def CAGR(df):
     return CAGR
 
 cagr_tst = CAGR(spx)
-print
+print(cagr_tst)
+
+#%%
