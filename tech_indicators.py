@@ -42,6 +42,7 @@ def Bollinger_Bands(df, n):
     df.dropna(inplace=True)
     return df
 
+# bband + plotting option
 kk = Bollinger_Bands(ohlcv, 20)
 kk.iloc[-100:,[-4,-3,-2]].plot(title="Bollinger Band")
 
