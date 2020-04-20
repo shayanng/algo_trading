@@ -66,7 +66,7 @@ def ATR(df, n):
     df2 = df.drop(['H-L','H-PC','L-PC'],axis=1)
     return df2
 
-### ATR Test 
+### ATR Test + plotting option
 jj = ATR(ohlcv, 10)
 plt.style.use('ggplot')
 plt.plot(jj[['ATR', 'TR']], alpha = 0.3)
