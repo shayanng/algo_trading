@@ -83,7 +83,7 @@ plt.legend()
 plt.show()
 
 
-#%% Alpha Vantage
+#%% Alpha Vantage API
 
 from alpha_vantage.timeseries import TimeSeries
  
