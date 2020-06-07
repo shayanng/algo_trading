@@ -72,3 +72,6 @@ jj = ATR(ohlcv, 10)
 plt.style.use('ggplot')
 plt.plot(jj[['ATR', 'TR']], alpha = 0.3)
 
+
+
+
